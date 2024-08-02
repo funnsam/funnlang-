@@ -54,10 +54,10 @@ impl Typechecker {
             let _ = self.constrain_ids(id, i);
         }
 
-        for i in self.types[id].linked_from.clone().into_iter() {
-            self._finalize_single(i, hist);
-            let _ = self.constrain_ids(i, id);
-        }
+        // for i in self.types[id].linked_from.clone().into_iter() {
+        //     self._finalize_single(i, hist);
+        //     let _ = self.constrain_ids(i, id);
+        // }
 
         hist.pop();
     }
@@ -565,10 +565,10 @@ impl Typechecker {
 
                 let mut errors = false;
                 for (l, r) in lp.clone().into_iter().zip(rp.clone()) {
-                    errors |= self._constrain_ids(l, r, hist.0, base2).is_err();
+                    errors |= self._constrain_ids(r, l, hist.0, base2).is_err();
                 }
 
-                errors |= self._constrain_ids(la, ra, hist.0, base2).is_err();
+                errors |= self._constrain_ids(ra, la, hist.0, base2).is_err();
 
                 return (!errors).then_some(()).ok_or(());
             },

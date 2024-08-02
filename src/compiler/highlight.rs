@@ -71,7 +71,7 @@ pub fn highlight(
         + "\x1b["
         + match (this, next) {
             (Ok(Ident), Some(Ok(RoBracketS))) => "34",
-            (Ok(Ident | RoBracketS | Brackets | Comma | Of), _) => "37",
+            (Ok(Ident | RoBracketS | Brackets | Comma | Of), _) => "39",
             (Ok(Integer | BuiltIn), _) => "33",
             (Ok(Keyword | Operator), _) => "35",
             (Ok(Unused | Scope), _) => "90",
@@ -80,7 +80,7 @@ pub fn highlight(
         + "m"
         + text
         + match (this, next) {
-            (Err(_), _) => "\x1b[21m",
+            (Err(_), _) => "\x1b[22m",
             _ => "",
         }
 }

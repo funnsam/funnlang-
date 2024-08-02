@@ -8,11 +8,7 @@
 )]
 #![allow(
     clippy::semicolon_inside_block,
-    clippy::just_underscores_and_digits,
-    unknown_lints,
-    cast_ref_to_mut,
-    invalid_reference_casting,
-    mutable_transmutes
+    clippy::just_underscores_and_digits
 )]
 
 mod compiler;
@@ -62,5 +58,5 @@ fn main() {
     let types = unwrap_or_report!(typecheck(&nast, ncnt));
     println!("{types:#?}");
 
-    compiler::backend::llvm::emit_code();
+    // compiler::backend::llvm::emit_code();
 }

@@ -78,10 +78,6 @@ pub fn report<E: CompilerError>(
         have_error |= matches!(err.severeness(), Severeness::Error);
     }
 
-    if have_error {
-        out += "\x1b[1mTL;DR: compilation successfully failed\x1b[0m\n\n";
-    }
-
     (out, have_error)
 }
 
@@ -211,7 +207,7 @@ impl Marker {
         }
 
         let start = byte_to_position(ctx, self.span.start.max(ctx.cat[line]));
-        let end = byte_to_position(ctx, self.span.end.min(ctx.cat[line + 1]));
+        let end = byte_to_position(ctx, self.span.end.min(ctx.cat[line + 1].saturating_sub(1)));
 
         let empty = "";
 
@@ -241,14 +237,14 @@ impl MarkerStyle {
 }
 
 fn dedup<E: std::cmp::PartialEq>(v: &mut Vec<E>) {
-    let mut rm = Vec::new();
-    for (i, e) in v.iter().enumerate() {
-        if v[..i].contains(e) {
-            rm.push(i);
-        }
-    }
+    let mut rc = 0;
+    for i in 0.. {
+        let i = i - rc;
+        if i >= v.len() { break; }
 
-    for (i, j) in rm.into_iter().enumerate() {
-        v.remove(j - i);
+        if v[..i].contains(&v[i]) {
+            v.remove(i);
+            rc += 1;
+        }
     }
 }
